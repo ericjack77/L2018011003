@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -56,6 +58,7 @@ public class MyAdapter extends BaseAdapter {
         }
         viewHolder.tv1.setText(mylist.get(i).title);
         viewHolder.tv2.setText(mylist.get(i).description);
+        Picasso.with(context).load(mylist.get(i).imgurl).into(viewHolder.img);
         return view;
     }
 

@@ -7,6 +7,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Student on 2018/1/10.
@@ -85,7 +87,21 @@ public class MyHandler extends DefaultHandler {
         if(isDescription && isitem)
         {
             Log.d("description",new String(ch,start,length));
-            item.description=new String(ch,start,length);
+            String str=new String(ch,start,length);
+
+            Pattern pattern =Pattern.compile("http.*jpg");
+            Matcher m = pattern.matcher(str);
+            String imgurl="";
+            if(m.find())
+            {
+                imgurl=m.group(0);
+            }
+
+            str=str.replaceAll("<img src.*/>","");
+            item.description=str;
+            item.imgurl=imgurl;
+            Log.d("imgurl", imgurl);
+
         }
 
     }
