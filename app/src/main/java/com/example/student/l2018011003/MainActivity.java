@@ -31,7 +31,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class MainActivity extends AppCompatActivity {
     ListView lv;
-    ArrayAdapter<String> adapter;
+    MyAdapter adapter;
     MyHandler myHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,16 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    String data[] =new String[myHandler.newsItems.size()];
-                                    for(int i=0;i<data.length;i++)
-                                    {
-                                        data[i]=myHandler.newsItems.get(i).title;
-
-                                    }
-
-                                    adapter = new ArrayAdapter<String>(MainActivity.this,
-                                            android.R.layout.simple_list_item_1,data
-                                    );
+                                    adapter = new MyAdapter(MainActivity.this,
+                                            myHandler.newsItems);
                                     lv.setAdapter(adapter);
                                 }
                             });
