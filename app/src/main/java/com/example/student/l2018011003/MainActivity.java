@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -24,11 +26,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class MainActivity extends AppCompatActivity {
-
+    ListView lv;
+    ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        lv =findViewById(R.id.listview);
     }
 
     public void click1(View v)
@@ -61,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
                     XMLReader xr = sp.getXMLReader();
                     xr.setContentHandler(myHandler);
                     xr.parse(new InputSource(new StringReader(str)));
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter = new ArrayAdapter<String>(MainActivity.this,
+                                    android.R.layout.simple_list_item_1,myHandler.title
+                                    );
+                            lv.setAdapter(adapter);
+                        }
+                    });
 
                     br.close();
                     isr.close();
