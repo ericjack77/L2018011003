@@ -15,10 +15,14 @@ import java.util.ArrayList;
 public class MyHandler extends DefaultHandler {
     boolean isTitle = false ;
     boolean isitem = false ;
-    ArrayList<String> title = new ArrayList<>();
     boolean isLink =false ;
-    ArrayList<String> links = new ArrayList<>();
     StringBuilder SBLink = new StringBuilder();
+    //public ArrayList<String> titles = new ArrayList<>();
+    //public ArrayList<String> links = new ArrayList<>();
+
+    public ArrayList<Moblie01NewsItem> newsItems = new ArrayList<>();
+    Moblie01NewsItem item;
+
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
@@ -29,6 +33,7 @@ public class MyHandler extends DefaultHandler {
         if (qName.equals("item"))
         {
             isitem=true;
+            item = new Moblie01NewsItem();
         }
         if(qName.equals("link"))
         {
@@ -46,6 +51,7 @@ public class MyHandler extends DefaultHandler {
         if (qName.equals("item"))
         {
             isitem=false;
+            newsItems.add(item);
         }
         if (qName.equals("link"))
         {
@@ -53,7 +59,8 @@ public class MyHandler extends DefaultHandler {
             Log.d("link",SBLink.toString());
             if(isitem)
             {
-                links.add(SBLink.toString());
+                //links.add(SBLink.toString());
+                item.url = SBLink.toString();
                 SBLink=new StringBuilder();
             }
 
@@ -66,7 +73,8 @@ public class MyHandler extends DefaultHandler {
         if(isTitle && isitem)
         {
             Log.d("Net",new String(ch,start,length));
-            title.add(new String(ch,start,length));
+            //title.add(new String(ch,start,length));
+            item.title=new String(ch,start,length);
         }
         if (isLink && isitem)
         {

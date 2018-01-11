@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent it =new Intent(MainActivity.this,WebActivity.class);
 
 
-                it.putExtra("link",myHandler.links.get(i));
+                it.putExtra("link",myHandler.newsItems.get(i).url);
                 startActivity(it);
 
             }
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                             HttpURLConnection conn=(HttpURLConnection) url.openConnection();
                             conn.setRequestMethod("GET");
                             conn.connect();
-                            InputStream inputStream = conn.getInputStream();
+                            final InputStream inputStream = conn.getInputStream();
                             InputStreamReader isr = new InputStreamReader(inputStream);
                             BufferedReader br=new BufferedReader(isr);
                             String str1;
@@ -92,10 +92,18 @@ public class MainActivity extends AppCompatActivity {
                             xr.parse(new InputSource(new StringReader(str)));
 
                             runOnUiThread(new Runnable() {
+
                                 @Override
                                 public void run() {
+                                    String data[] =new String[myHandler.newsItems.size()];
+                                    for(int i=0;i<data.length;i++)
+                                    {
+                                        data[i]=myHandler.newsItems.get(i).title;
+
+                                    }
+
                                     adapter = new ArrayAdapter<String>(MainActivity.this,
-                                            android.R.layout.simple_list_item_1,myHandler.title
+                                            android.R.layout.simple_list_item_1,data
                                     );
                                     lv.setAdapter(adapter);
                                 }
