@@ -20,6 +20,7 @@ public class MyHandler extends DefaultHandler {
     boolean isLink =false ;
     boolean isDescription =false;
     StringBuilder SBLink = new StringBuilder();
+    StringBuilder SBDescri = new StringBuilder();
 
     public ArrayList<Moblie01NewsItem> newsItems = new ArrayList<>();
     Moblie01NewsItem item;
@@ -41,6 +42,7 @@ public class MyHandler extends DefaultHandler {
                 break;
             case "description":
                 isDescription=true;
+                SBDescri = new StringBuilder();
                 break;
         }
     }
@@ -68,6 +70,23 @@ public class MyHandler extends DefaultHandler {
                 break;
             case "description":
                 isDescription=false;
+                if (isitem)
+                {
+                    String str=SBDescri.toString();
+
+                    Pattern pattern =Pattern.compile("http.*jpg");
+                    Matcher m = pattern.matcher(str);
+                    String imgurl="";
+                    if(m.find())
+                    {
+                        imgurl=m.group(0);
+                    }
+
+                    str=str.replaceAll("<img src.*/>","");
+                    item.description=str;
+                    item.imgurl=imgurl;
+                    Log.d("imgurl", imgurl);
+                }
                 break;
         }
     }
@@ -86,22 +105,7 @@ public class MyHandler extends DefaultHandler {
         }
         if(isDescription && isitem)
         {
-            Log.d("description",new String(ch,start,length));
-            String str=new String(ch,start,length);
-
-            Pattern pattern =Pattern.compile("http.*jpg");
-            Matcher m = pattern.matcher(str);
-            String imgurl="";
-            if(m.find())
-            {
-                imgurl=m.group(0);
-            }
-
-            str=str.replaceAll("<img src.*/>","");
-            item.description=str;
-            item.imgurl=imgurl;
-            Log.d("imgurl", imgurl);
-
+           SBDescri.append(new String(ch,start,length));
         }
 
     }
